@@ -1,0 +1,76 @@
+1 мемори менеджер обслуживает 1 контейнер?
+в конструкторе передаем мемори менеджер который использует контейнер
+memcmp может проверить не только равные но и что больше вернет -1 или 1
+мемори менеджер как обертка над маллоком
+надо дважды вызывать мемори менеджер для ноды и для данных
+вектор указателей а потом для каждого элемента выделяется память
+
+TreeSet(MemMan &mem) :
+AbstractSet(mem),
+{
+    void* add = mem.alloc(sizeof(Node));
+    root = new (addr) Node();
+}
+~TreeSet()
+{}
+{
+ root.~Node();
+mem.freeMem(root);
+}
+
+написать функцию которая сравнивает элементы
+проверить в инсерте как копируются данные
+
+// старый кусок поиска
+	if (v->size == size) {
+		if (memcmp(v->key_elem, elem_key, size) == 0)
+			return true;
+		else if (memcmp(v->key_elem, elem_key, size) > 0)  //ключ первого элемента больше
+			return search(v->left, elem_key, size);
+		else
+			return search(v->right, elem_key, size); //ключ второго элемента больше
+	}
+	else if (v->size > size)
+		return search(v->left, elem_key,size);
+	else
+		return search(v->right, elem_key,size);
+
+		старый кусок сплита
+		if (root->size == size) {
+		if (memcmp(root->key_elem,elem_key,size) < 0) //первый блок памяти меньше
+		{
+			tree_pair splitted = split(root->right, elem_key,size);
+			root->right = splitted.first;
+			ans.first = root; ans.second = splitted.second;
+		}
+		else
+		{
+			tree_pair splitted = split(root->left, elem_key,size);
+			root->left = splitted.second;
+			ans.first = splitted.first; ans.second = root;
+		}
+	}
+	else if (root->size < size) {
+		tree_pair splitted = split(root->right, elem_key, size);
+		root->right = splitted.first;
+		ans.first = root; ans.second = splitted.second;
+	}
+	else {
+		tree_pair splitted = split(root->left, elem_key, size);
+		root->left = splitted.second;
+		ans.first = splitted.first; ans.second = root;
+	}
+
+	сделать исключение в функции инсерт в ней 
+
+
+	int insert(AbstractTree::Iterator *it, int child_index, void *elem, size_t size) {
+        Tree::Iterator *iter = dynamic_cast<Tree::Iterator*>(it);
+
+
+
+
+
+
+
+
